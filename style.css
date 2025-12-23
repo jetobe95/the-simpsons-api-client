@@ -1,0 +1,97 @@
+.card-container {
+    display: flex;
+    background: #1a1a1a;
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 550px;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    margin-block-end: 12px;
+  }
+  
+  .card-container:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-image {
+    position: relative;
+    width: 40%;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .season-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #FFD90F; /* Amarillo Simpson */
+    color: black;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+  }
+  
+  .card-content {
+    padding: 20px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .episode-number {
+    color: #FFD90F;
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  
+  .title {
+    margin: 5px 0;
+    font-size: 1.4rem;
+  }
+  
+  .description {
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.4;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+  
+  .play-button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .play-button:hover {
+    background: #FFD90F;
+  }
+
+
+  @media (width <= 425px) {
+    .card-image img {
+      object-fit: contain;
+      margin-top: 50%;
+      /* Un pequeño tip: asegúrate que la imagen ocupe el ancho */
+      width: 100%;
+      height: auto;
+    }
+  }
