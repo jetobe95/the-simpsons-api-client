@@ -1,31 +1,28 @@
-const STORAGEKEY = "favoritos";
+const STORAGEKEY = "favoritos_ids";
 const addFavorite = (id) => {
   const saved = localStorage.getItem(STORAGEKEY);
-  const newFav =  id ;
+  const newFav = id;
   if (saved) {
     const list = new Set(JSON.parse(saved));
-    list.add(newFav);
-    
-    localStorage.setItem(
-      STORAGEKEY,
-      JSON.stringify(Array.from(list))
-    );
-} else {
-    localStorage.setItem(
-        STORAGEKEY,
-        JSON.stringify([newFav])
-      );
+    if (list.has(newFav)) {
+      list.delete(newFav);
+    } else {
+      list.add(newFav);
+    }
+
+    localStorage.setItem(STORAGEKEY, JSON.stringify(Array.from(list)));
+  } else {
+    localStorage.setItem(STORAGEKEY, JSON.stringify([newFav]));
   }
 };
 
-
-let favoritos = [];
-const loadFavorites = ()=>{
-    const saved = localStorage.getItem(STORAGEKEY)
-    if(saved){
-        favoritos = JSON.parse(saved)
-    }
-}
+let favoritos = new Set();
+const loadFavorites = () => {
+  const saved = localStorage.getItem(STORAGEKEY);
+  if (saved) {
+    favoritos = new Set(JSON.parse(saved));
+  }
+};
 function createEpisodeCard(data) {
   const card = document.createElement("li");
   card.className = "card-container";
@@ -70,7 +67,7 @@ function createEpisodeCard(data) {
              <div class="footer">
                         <button class="play-button" onclick="addFavorite(${
                           data.id
-                        })">★</button>
+                        })">${favoritos.has(data.id) ? '★':'☆'}</button>
                     </div>
         </div>
     `;
@@ -97,6 +94,7 @@ let page = 1;
 
 const main = async () => {
   const centinela = document.querySelector("#centinela");
+  loadFavorites();
 
   await fetchEpisodes();
 

@@ -1,3 +1,11 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+#chapters-list {
+  padding-inline: 1rem;
+}
 .card-container {
     display: flex;
     background: #1a1a1a;
@@ -85,13 +93,66 @@
     background: #FFD90F;
   }
 
+  /* Estilos básicos */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  
+  background: #333;
+  color: white;
+}
 
-  @media (width <= 425px) {
-    .card-image img {
-      object-fit: contain;
-      margin-top: 50%;
-      /* Un pequeño tip: asegúrate que la imagen ocupe el ancho */
-      width: 100%;
-      height: auto;
+.menu {
+  display: flex;
+  list-style: none;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+
+/* Escondemos el checkbox y el icono por defecto (escritorio) */
+#menu-toggle, .hamburger {
+  display: none;
+}
+
+/* Diseño para móviles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* Mostramos las 3 rayitas */
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: #444;
+  }
+
+  #menu-toggle:checked ~ .menu {
+    display: flex;
+    z-index: 10;
+  }
+
+  .menu li {
+    padding: 1rem;
+    border-bottom: 1px solid #555;
+  }
+}
+
+
+  @media (width <= 430px) {
+    .card-image {
+      display: grid;
+      place-items: center;
     }
   }
