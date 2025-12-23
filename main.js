@@ -111,7 +111,7 @@ const main = async () => {
     }
   );
 
-  observer.observe(centinela);
+  centinela && observer.observe(centinela);
 };
 
 main();
