@@ -1,19 +1,44 @@
-const addFavorite = (id)=>{
-    alert(id);
+const STORAGEKEY = "favoritos";
+const addFavorite = (id) => {
+  const saved = localStorage.getItem(STORAGEKEY);
+  const newFav =  id ;
+  if (saved) {
+    const list = new Set(JSON.parse(saved));
+    list.add(newFav);
+    
+    localStorage.setItem(
+      STORAGEKEY,
+      JSON.stringify(Array.from(list))
+    );
+} else {
+    localStorage.setItem(
+        STORAGEKEY,
+        JSON.stringify([newFav])
+      );
+  }
+};
+
+
+let favoritos = [];
+const loadFavorites = ()=>{
+    const saved = localStorage.getItem(STORAGEKEY)
+    if(saved){
+        favoritos = JSON.parse(saved)
+    }
 }
 function createEpisodeCard(data) {
   const card = document.createElement("li");
   card.className = "card-container";
 
   const path = data.image_path;
-const name = data?.name || 'Personaje';
+  const name = data?.name || "Personaje";
 
-// Construimos las URLs para cada tamaño disponible
-const url200 = `https://cdn.thesimpsonsapi.com/200${path}`;
-const url500 = `https://cdn.thesimpsonsapi.com/500${path}`;
-const url1280 = `https://cdn.thesimpsonsapi.com/1280${path}`;
+  // Construimos las URLs para cada tamaño disponible
+  const url200 = `https://cdn.thesimpsonsapi.com/200${path}`;
+  const url500 = `https://cdn.thesimpsonsapi.com/500${path}`;
+  const url1280 = `https://cdn.thesimpsonsapi.com/1280${path}`;
 
-const imgHTML = `
+  const imgHTML = `
   <img 
     src="${url500}" 
     srcset="${url200} 200w, 
@@ -36,17 +61,16 @@ const imgHTML = `
         </div>
         <div class="card-content">
             <div class="header">
-                <span class="episode-number">${data?.airdate}</span>
+                <span class="episode-number">E${data?.episode_number
+                  ?.toString()
+                  .padStart(2, "0")}</span>
                 <h2 class="title">${data?.name}</h2>
             </div>
             <p class="description">${data?.synopsis}</p>
              <div class="footer">
-                        <div class="info">
-                            <span>⭐ 9.2</span>
-                            <span>•</span>
-                            <span>22 min</span>
-                        </div>
-                        <button class="play-button" onclick="addFavorite(${data.id})">★</button>
+                        <button class="play-button" onclick="addFavorite(${
+                          data.id
+                        })">★</button>
                     </div>
         </div>
     `;
