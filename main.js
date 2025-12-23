@@ -1,7 +1,8 @@
 const STORAGEKEY = "favoritos_ids";
-const addFavorite = (id) => {
+const addFavorite = (el) => {
   const saved = localStorage.getItem(STORAGEKEY);
-  const newFav = id;
+  const newFav = el.dataset.episode;
+  el.classList.toggle('enabled');
   if (saved) {
     const list = new Set(JSON.parse(saved));
     if (list.has(newFav)) {
@@ -65,9 +66,11 @@ function createEpisodeCard(data) {
             </div>
             <p class="description">${data?.synopsis}</p>
              <div class="footer">
-                        <button class="play-button" onclick="addFavorite(${
-                          data.id
-                        })">${favoritos.has(data.id) ? '★':'☆'}</button>
+                        <button 
+                        class="play-button ${favoritos.has(JSON.stringify(data)) ? 'enabled':''}" 
+                        data-episode='${JSON.stringify(data)}'
+                        onclick="addFavorite(this)"
+                        >${favoritos.has(JSON.stringify(data)) ? '★':'☆'}</button>
                     </div>
         </div>
     `;

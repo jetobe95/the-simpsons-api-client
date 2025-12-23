@@ -1,23 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capítulos favoritos</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0">
 </head>
+
 <body>
     <nav class="navbar">
-        <img width="100px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/The_Simpsons_yellow_logo.svg/1200px-The_Simpsons_yellow_logo.svg.png" alt="">
-      
+        <img width="100px"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/The_Simpsons_yellow_logo.svg/1200px-The_Simpsons_yellow_logo.svg.png"
+            alt="">
+
         <input type="checkbox" id="menu-toggle">
         <label for="menu-toggle" class="hamburger">&#9776;</label>
-      
+
         <ul class="menu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="favoritos.html">Favoritos</a></li>
-          <li><a href="https://thesimpsonsapi.com/">API</a></li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="favoritos.html">Favoritos</a></li>
+            <li><a href="https://thesimpsonsapi.com/">API</a></li>
         </ul>
-      </nav>
+    </nav>
+
+    <ul id="episodes-list"></ul>
+
+    <script>
+        const STORAGEKEY = "favoritos_ids";
+        let favoritos = new Set();
+        const loadFavorites = () => {
+            const saved = localStorage.getItem(STORAGEKEY);
+            if (saved) {
+                favoritos = new Set(JSON.parse(saved));
+                console.log(favoritos)
+            }
+        };
+        function createEpisodeCard(data) {
+            const card = document.createElement("li");
+            card.className = "card-container";
+
+            const path = data.image_path;
+            const name = data?.name || "Personaje";
+
+            // Construimos las URLs para cada tamaño disponible
+            const url200 = `https://cdn.thesimpsonsapi.com/200${path}`;
+            const url500 = `https://cdn.thesimpsonsapi.com/500${path}`;
+            const url1280 = `https://cdn.thesimpsonsapi.com/1280${path}`;
+
+            const imgHTML = `
+  <img 
+    src="${url500}" 
+    srcset="${url200} 200w, 
+            ${url500} 500w, 
+            ${url1280} 1280w"
+    sizes="(max-width: 320px) 200px, 
+           (max-width: 768px) 500px, 
+           1280px"
+    alt="" 
+    loading="lazy" 
+    height="400"
+    style="width: 100%; height: auto; object-fit: cover;"
+  >
+`;
+
+            card.innerHTML = `
+        <div class="card-image">
+            ${imgHTML}
+            <span class="season-badge">Temporada ${data?.season}</span>
+        </div>
+        <div class="card-content">
+            <div class="header">
+                <span class="episode-number">E${data?.episode_number
+                    ?.toString()
+                    .padStart(2, "0")}</span>
+                <h2 class="title">${data?.name}</h2>
+            </div>
+            <p class="description">${data?.synopsis}</p>
+             <div class="footer">
+                        <button class="play-button" onclick="addFavorite(${data.id
+                })">${favoritos.has(data.id) ? '★' : '☆'}</button>
+                    </div>
+        </div>
+    `;
+            return card;
+        }
+
+
+        loadFavorites();
+
+        const episodesList$ = document.querySelector("#episodes-list");
+
+
+        const fragment = document.createDocumentFragment();
+        Array.from(favoritos).forEach((episode) => {
+            const card = createEpisodeCard(episode);
+            fragment.appendChild(card);
+        });
+
+        episodesList$?.appendChild(fragment);
+
+    </script>
 </body>
+
 </html>

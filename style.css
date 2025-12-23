@@ -6,6 +6,10 @@ body {
 #chapters-list {
   padding-inline: 1rem;
 }
+
+.play-button.enabled {
+  background-color: red;
+}
 .card-container {
     display: flex;
     background: #1a1a1a;
